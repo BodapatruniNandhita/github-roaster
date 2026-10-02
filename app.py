@@ -1,7 +1,7 @@
 import os
 import requests
 import streamlit as st
-import google.generativeai as genai
+from google import genai  
 
 # Page Configuration
 st.set_page_config(page_title="GitHub Vibe-Check & Roast", page_icon="🔥", layout="centered")
@@ -12,7 +12,9 @@ st.write("Enter any public GitHub username to get a brutally honest, AI-powered 
 # Sidebar for API Key Input
 api_key = st.sidebar.text_input("Enter Gemini API Key", type="password")
 
-if not api_key and "GEMINI_API_KEY" in os.environ:
+if not api_key and "GEMINI_API_KEY" in st.secrets:
+    api_key = st.secrets["GEMINI_API_KEY"]
+elif not api_key and "GEMINI_API_KEY" in os.environ:
     api_key = os.environ["GEMINI_API_KEY"]
 
 def fetch_github_data(username):
@@ -50,8 +52,8 @@ def fetch_github_data(username):
 
 def generate_roast(github_info, key):
     """Generates the roast using Gemini API."""
-    genai.configure(api_key=key)
-    model = genai.GenerativeModel('gemini-3.8-flash')    
+    client = genai.Client(api_key=key)
+    
     prompt = f"""
     You are a witty, tech-savvy internet roaster who judges developers based on their GitHub profile.
     Analyze this developer's GitHub profile data:
@@ -65,7 +67,10 @@ def generate_roast(github_info, key):
     Keep it witty, fast-paced, and filled with internet/tech culture humor!
     """
 
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
     return response.text
 
 # UI Layout
@@ -75,7 +80,7 @@ if st.button("🔥 Roast Profile!"):
     if not username.strip():
         st.warning("Please enter a valid GitHub username.")
     elif not api_key:
-        st.error("Please enter a Gemini API Key in the sidebar.")
+        st.error("Please enter a Gemini API Key in the sidebar or configure it in Secrets.")
     else:
         with st.spinner("Fetching profile and generating roast..."):
             data, error = fetch_github_data(username.strip())
