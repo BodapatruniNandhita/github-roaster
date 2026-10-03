@@ -96,48 +96,65 @@ Keep it witty, fast-paced, and filled with internet/tech culture humor."""
     return response.text
 
 
-st.set_page_config(page_title="GitHub Roaster", page_icon="🔥", layout="centered")
-st.title("🔥 GitHub Roaster")
-st.write("Drop a GitHub profile and get a playful roast powered by Gemini.")
+st.set_page_config(page_title="GitHub Vibe-Check & Roast", page_icon="🔥", layout="centered")
+
+try:
+    configured_key = st.secrets.get("GEMINI_API_KEY", "")
+except Exception:
+    # Streamlit raises when no secrets file is configured for local development.
+    configured_key = ""
+configured_key = os.getenv("GEMINI_API_KEY", "") or configured_key
+
+with st.sidebar:
+    st.text_input(
+        "Enter Gemini API Key",
+        value=configured_key,
+        type="password",
+        key="gemini_api_key",
+        help="Your key is used only to call Gemini. On Streamlit Cloud, store it in App settings → Secrets.",
+    )
+
+st.title("🔥 GitHub Profile Auto-Roaster & Vibe Check")
+st.write("Enter any public GitHub username to get a brutally honest, AI-powered roast and vibe check!")
 
 with st.form("roast_form"):
-    profile_input = st.text_input("GitHub username or profile URL", placeholder="octocat")
-    entered_api_key = st.text_input(
-        "Gemini API key (optional if configured in app secrets)",
-        type="password",
-        help="This key is used for this request and is not saved by the app.",
-    )
-    submitted = st.form_submit_button("Roast this profile", type="primary", use_container_width=True)
+    profile_input = st.text_input("GitHub Username", placeholder="octocat")
+    submitted = st.form_submit_button("🔥 Roast Profile!", type="primary")
 
 if submitted:
     try:
         username = normalize_username(profile_input)
-        with st.spinner(f"Fetching @{username}'s public GitHub profile…"):
-            profile = get_github_profile(username)
-
-        api_key = os.getenv("GEMINI_API_KEY", "")
+        api_key = st.session_state.get("gemini_api_key", "").strip()
         if not api_key:
-            try:
-                api_key = st.secrets.get("GEMINI_API_KEY", "")
-            except Exception:
-                # Streamlit raises when no secrets file is configured for local development.
-                api_key = ""
-        api_key = api_key or entered_api_key
-        if not api_key:
-            st.error("Add GEMINI_API_KEY to Streamlit app secrets or enter your key above.")
+            st.error("Enter your Gemini API key in the sidebar or add GEMINI_API_KEY to app secrets.")
+            st.session_state.pop("last_roast", None)
         else:
+            with st.spinner(f"Fetching @{username}'s public GitHub profile…"):
+                profile = get_github_profile(username)
             with st.spinner("Consulting the internet's least qualified career coach…"):
                 roast = generate_roast(profile, api_key)
-            st.markdown(roast)
-            st.caption(f"Based on public profile data for [@{username}](https://github.com/{username}).")
+            st.session_state["last_roast"] = {"username": username, "text": roast}
     except ValueError as exc:
         st.error(str(exc))
+        st.session_state.pop("last_roast", None)
     except requests.Timeout:
         st.error("GitHub took too long to respond. Please try again.")
+        st.session_state.pop("last_roast", None)
     except requests.RequestException:
         st.error("Could not fetch the GitHub profile right now. Please try again in a moment.")
+        st.session_state.pop("last_roast", None)
     except Exception as exc:
         # Avoid showing provider responses that could contain sensitive request details.
         st.error(f"The roast could not be generated. Check your Gemini API key and try again. ({type(exc).__name__})")
+        st.session_state.pop("last_roast", None)
+
+if roast_result := st.session_state.get("last_roast"):
+    st.success("Roast Generated!")
+    st.divider()
+    st.markdown(roast_result["text"])
+    st.caption(
+        f"Based on public profile data for "
+        f"[@{roast_result['username']}](https://github.com/{roast_result['username']})."
+    )
 
 st.caption("Roasts use public GitHub profile data and are meant to be playful.")
