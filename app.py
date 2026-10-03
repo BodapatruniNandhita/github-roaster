@@ -117,7 +117,7 @@ st.markdown(
     }
     [data-testid="stMainBlockContainer"] {
         max-width: 55rem !important;
-        padding-top: 5.5rem;
+        padding-top: 7.5rem;
     }
     [data-testid="stMarkdownContainer"] { color: #31333f; }
     [data-testid="stMarkdownContainer"] h1 {
@@ -168,7 +168,7 @@ st.markdown(
     }
     @media (max-width: 900px) {
         [data-testid="stSidebar"] { min-width: 18rem; max-width: 18rem; }
-        [data-testid="stMainBlockContainer"] { padding-top: 2rem; }
+        [data-testid="stMainBlockContainer"] { padding-top: 3rem; }
         [data-testid="stMarkdownContainer"] h1 { font-size: 2.3rem; }
         [data-testid="stMarkdownContainer"] h2 { font-size: 1.7rem; }
     }
@@ -196,7 +196,7 @@ with st.sidebar:
 st.title("🔥 GitHub Profile Auto-Roaster & Vibe Check")
 st.write("Enter any public GitHub username to get a brutally honest, AI-powered roast and vibe check!")
 
-with st.form("roast_form"):
+with st.form("roast_form", clear_on_submit=True):
     profile_input = st.text_input("GitHub Username", placeholder="octocat")
     submitted = st.form_submit_button("🔥 Roast Profile!", type="secondary")
 
