@@ -104,33 +104,73 @@ Keep it witty, fast-paced, and filled with internet/tech culture humor."""
     return response.text
 
 
-st.set_page_config(page_title="GitHub Vibe-Check & Roast", page_icon="🔥", layout="centered")
+st.set_page_config(page_title="GitHub Vibe-Check & Roast", page_icon="🔥", layout="wide")
 st.markdown(
     """
     <style>
     [data-testid="stAppViewContainer"] { background: #ffffff; }
     [data-testid="stHeader"] { background: #ffffff; }
-    [data-testid="stSidebar"] { background: #f0f2f6; }
+    [data-testid="stSidebar"] {
+        background: #f0f2f6;
+        min-width: 23.5rem;
+        max-width: 23.5rem;
+    }
+    [data-testid="stMainBlockContainer"] {
+        max-width: 55rem !important;
+        padding-top: 5.5rem;
+    }
     [data-testid="stMarkdownContainer"] { color: #31333f; }
-    [data-testid="stMarkdownContainer"] h1,
-    [data-testid="stMarkdownContainer"] h2,
+    [data-testid="stMarkdownContainer"] h1 {
+        color: #31333f;
+        font-size: 3rem;
+        line-height: 1.18;
+        letter-spacing: -0.025em;
+    }
+    [data-testid="stMarkdownContainer"] h2 {
+        color: #31333f;
+        font-size: 2rem;
+        line-height: 1.3;
+        margin-top: 1.6rem;
+        margin-bottom: 1rem;
+    }
     [data-testid="stMarkdownContainer"] h3,
     [data-testid="stMarkdownContainer"] p,
     [data-testid="stMarkdownContainer"] li { color: #31333f; }
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] li {
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+    [data-testid="stAlert"] p {
+        font-size: 1.1rem;
+        line-height: 1.5;
+    }
+    [data-testid="stTextInput"] label { font-size: 1rem; }
     [data-testid="stTextInput"] input {
         background: #f0f2f6;
         color: #31333f;
         border: 1px solid #e1e4e8;
+        min-height: 3.1rem;
+        font-size: 1rem;
     }
     [data-testid="stFormSubmitButton"] button {
         background: #ffffff;
         color: #31333f;
         border: 1px solid #d9dce1;
+        min-height: 3rem;
+        padding: 0 1rem;
+        font-size: 1rem;
     }
     [data-testid="stFormSubmitButton"] button:hover {
         background: #f5f6f8;
         color: #31333f;
         border-color: #c6c9ce;
+    }
+    @media (max-width: 900px) {
+        [data-testid="stSidebar"] { min-width: 18rem; max-width: 18rem; }
+        [data-testid="stMainBlockContainer"] { padding-top: 2rem; }
+        [data-testid="stMarkdownContainer"] h1 { font-size: 2.3rem; }
+        [data-testid="stMarkdownContainer"] h2 { font-size: 1.7rem; }
     }
     </style>
     """,
@@ -188,6 +228,8 @@ if submitted:
         st.session_state.pop("last_roast", None)
 
 if roast_result := st.session_state.get("last_roast"):
+    st.success("Roast Generated!")
+    st.divider()
     st.markdown(roast_result["text"])
     st.caption(
         f"Based on public profile data for "
