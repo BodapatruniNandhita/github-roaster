@@ -132,7 +132,7 @@ st.markdown(
         font-size: 2rem;
         line-height: 1.3;
         margin-top: 0.65rem;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.25rem;
     }
     [data-testid="stMarkdownContainer"] h3,
     [data-testid="stMarkdownContainer"] p,
