@@ -117,7 +117,7 @@ st.markdown(
     }
     [data-testid="stMainBlockContainer"] {
         max-width: 55rem !important;
-        padding-top: 7.5rem;
+        padding-top: 5.5rem;
     }
     [data-testid="stMarkdownContainer"] { color: #31333f; }
     [data-testid="stMarkdownContainer"] h1 {
@@ -125,6 +125,7 @@ st.markdown(
         font-size: 3rem;
         line-height: 1.18;
         letter-spacing: -0.025em;
+        text-align: center;
     }
     [data-testid="stMarkdownContainer"] h2 {
         color: #31333f;
@@ -168,7 +169,7 @@ st.markdown(
     }
     @media (max-width: 900px) {
         [data-testid="stSidebar"] { min-width: 18rem; max-width: 18rem; }
-        [data-testid="stMainBlockContainer"] { padding-top: 3rem; }
+        [data-testid="stMainBlockContainer"] { padding-top: 2rem; }
         [data-testid="stMarkdownContainer"] h1 { font-size: 2.3rem; }
         [data-testid="stMarkdownContainer"] h2 { font-size: 1.7rem; }
     }
