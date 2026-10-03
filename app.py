@@ -112,8 +112,8 @@ st.markdown(
     [data-testid="stHeader"] { background: #ffffff; }
     [data-testid="stSidebar"] {
         background: #f0f2f6;
-        min-width: 23.5rem;
-        max-width: 23.5rem;
+        min-width: 17.5rem;
+        max-width: 17.5rem;
     }
     [data-testid="stMainBlockContainer"] {
         max-width: 55rem !important;
