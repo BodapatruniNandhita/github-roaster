@@ -131,8 +131,8 @@ st.markdown(
         color: #31333f;
         font-size: 2rem;
         line-height: 1.3;
-        margin-top: 1.6rem;
-        margin-bottom: 1rem;
+        margin-top: 0.65rem;
+        margin-bottom: 0.75rem;
     }
     [data-testid="stMarkdownContainer"] h3,
     [data-testid="stMarkdownContainer"] p,
@@ -146,6 +146,8 @@ st.markdown(
         font-size: 1.1rem;
         line-height: 1.5;
     }
+    [data-testid="stAlert"] { margin-bottom: 0.4rem; }
+    [data-testid="stMarkdownContainer"] hr { margin: 0.5rem 0; }
     [data-testid="stTextInput"] label { font-size: 1rem; }
     [data-testid="stTextInput"] input {
         background: #f0f2f6;
