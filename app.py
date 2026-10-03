@@ -117,7 +117,7 @@ st.markdown(
     }
     [data-testid="stMainBlockContainer"] {
         max-width: 55rem !important;
-        padding-top: 5.5rem;
+        padding-top: 4.5rem;
     }
     [data-testid="stMarkdownContainer"] { color: #31333f; }
     [data-testid="stMarkdownContainer"] h1 {
