@@ -97,6 +97,37 @@ Keep it witty, fast-paced, and filled with internet/tech culture humor."""
 
 
 st.set_page_config(page_title="GitHub Vibe-Check & Roast", page_icon="🔥", layout="centered")
+st.markdown(
+    """
+    <style>
+    [data-testid="stAppViewContainer"] { background: #ffffff; }
+    [data-testid="stHeader"] { background: #ffffff; }
+    [data-testid="stSidebar"] { background: #f0f2f6; }
+    [data-testid="stMarkdownContainer"] { color: #31333f; }
+    [data-testid="stMarkdownContainer"] h1,
+    [data-testid="stMarkdownContainer"] h2,
+    [data-testid="stMarkdownContainer"] h3,
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] li { color: #31333f; }
+    [data-testid="stTextInput"] input {
+        background: #f0f2f6;
+        color: #31333f;
+        border: 1px solid #e1e4e8;
+    }
+    [data-testid="stFormSubmitButton"] button {
+        background: #ffffff;
+        color: #31333f;
+        border: 1px solid #d9dce1;
+    }
+    [data-testid="stFormSubmitButton"] button:hover {
+        background: #f5f6f8;
+        color: #31333f;
+        border-color: #c6c9ce;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 try:
     configured_key = st.secrets.get("GEMINI_API_KEY", "")
@@ -119,7 +150,7 @@ st.write("Enter any public GitHub username to get a brutally honest, AI-powered 
 
 with st.form("roast_form"):
     profile_input = st.text_input("GitHub Username", placeholder="octocat")
-    submitted = st.form_submit_button("🔥 Roast Profile!", type="primary")
+    submitted = st.form_submit_button("🔥 Roast Profile!", type="secondary")
 
 if submitted:
     try:
@@ -149,8 +180,6 @@ if submitted:
         st.session_state.pop("last_roast", None)
 
 if roast_result := st.session_state.get("last_roast"):
-    st.success("Roast Generated!")
-    st.divider()
     st.markdown(roast_result["text"])
     st.caption(
         f"Based on public profile data for "
